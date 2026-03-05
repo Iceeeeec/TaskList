@@ -5,7 +5,8 @@
  * @author: zhoujunyu
  */
 
-const API_BASE = '/api';
+// const API_BASE = '/api';
+const API_BASE = 'http://localhost:8733/api';
 
 /** 获取当前登录用户ID */
 function getLoginUserId() {

@@ -107,6 +107,9 @@ const TaskApp = {
         // 初始化数据（从 API 加载）
         await TaskData.init();
 
+        // 加载默认选中任务的详情（含子任务），确保首次渲染时子任务可见
+        await TaskData.loadSelectedTaskDetail();
+
         // 初始渲染
         TaskRender.renderAll();
 
@@ -125,6 +128,7 @@ const TaskApp = {
         this._bindClickOutside();
         this._bindFolderEvents();
         this._bindLogoutEvent();
+        this._bindMobileEvents();
     },
 
     /**
@@ -161,6 +165,48 @@ const TaskApp = {
                 }
             });
         }
+    },
+
+    /**
+     * 绑定移动端独有的事件（侧栏开关）
+     */
+    _bindMobileEvents() {
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const overlay = document.getElementById('sidebar-overlay');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (!menuBtn || !overlay || !sidebar) return;
+
+        const closeSidebar = () => {
+            sidebar.classList.remove('active');
+            overlay.classList.add('hidden');
+        };
+
+        const openSidebar = () => {
+            sidebar.classList.add('active');
+            overlay.classList.remove('hidden');
+        };
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openSidebar();
+        });
+
+        overlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeSidebar();
+        });
+
+        // 在侧边栏内点击导航链接时自动收缩侧边栏（移动端友好）
+        sidebar.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link) {
+                // 如果在小屏模式下，点击后侧边栏需要收起
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            }
+        });
     },
 
     /**
@@ -686,13 +732,14 @@ const TaskApp = {
             // 关闭清单弹窗
             const catPopup = document.getElementById('category-popup');
             if (catPopup) catPopup.classList.add('hidden');
-            // 定位到按钮正下方
-            const toolbar = tagBtn.closest('.add-task-toolbar');
-            if (toolbar) {
+            popup.style.cssText = ''; 
+            if (window.innerWidth > 768) {
                 const btnRect = tagBtn.getBoundingClientRect();
-                const toolbarRect = toolbar.getBoundingClientRect();
-                popup.style.left = (btnRect.left - toolbarRect.left) + 'px';
+                popup.style.position = 'absolute';
+                popup.style.left = `${btnRect.left + window.scrollX}px`;
+                popup.style.top = `${btnRect.bottom + window.scrollY + 4}px`;
             }
+            
             this._toggleTagPopup(popup);
         });
 
@@ -1160,9 +1207,27 @@ const TaskApp = {
                 e.stopPropagation();
                 this.tagPopupMode = 'detail';
                 const popup = document.getElementById('tag-popup');
-                popup.style.right = '340px';
-                popup.style.left = 'auto';
-                popup.style.top = '220px';
+                
+                // 仅在 PC 端使用定位，移动端由 mobile.css 接管居中显示
+                if (window.innerWidth > 768) {
+                    const rect = detailTagsRow.getBoundingClientRect();
+                    popup.style.cssText = ''; 
+                    popup.style.position = 'absolute'; 
+                    popup.style.right = 'auto';
+                    
+                    // 防溢出：如果距离右侧不够260px（弹窗宽度），则对左边距进行调整
+                    let leftPos = rect.left + window.scrollX;
+                    if (leftPos + 260 > window.innerWidth) {
+                        leftPos = window.innerWidth - 270;
+                    }
+                    
+                    popup.style.left = `${leftPos}px`;
+                    popup.style.top = `${rect.bottom + window.scrollY + 8}px`; // 紧贴着标签下面
+                    popup.style.zIndex = '1200';
+                } else {
+                    popup.style.cssText = ''; 
+                }
+                
                 this._toggleTagPopup(popup);
             });
         }

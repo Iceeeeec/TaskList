@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="css/sidebar.css"/>
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="css/detail.css"/>
+    <link rel="stylesheet" href="css/mobile.css"/>
 </head>
 <body>
 
@@ -144,6 +145,9 @@
 
     </aside>
 
+    <!-- 侧边栏移动端遮罩 -->
+    <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
+
     <!-- ========================================
          主内容区域
          ======================================== -->
@@ -151,9 +155,14 @@
 
         <!-- 头部 -->
         <header class="main-header">
-            <div>
-                <h2>所有任务</h2>
-                <p class="date-text">今天是...</p>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button id="mobile-menu-btn" class="mobile-menu-btn hidden-pc" title="展开菜单">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <div>
+                    <h2>所有任务</h2>
+                    <p class="date-text">今天是...</p>
+                </div>
             </div>
             <div class="header-actions">
                 <!-- 消息通知 -->
@@ -254,10 +263,7 @@
                             家庭
                         </div>
                     </div>
-                    <!-- 标签选择弹窗 -->
-                    <div id="tag-popup" class="tag-popup hidden">
-                        <!-- 由 render.js 动态填充 -->
-                    </div>
+
 
                     <button class="add-submit-btn">
                         <span class="material-symbols-outlined">save</span>
@@ -491,6 +497,11 @@
             <span class="material-symbols-outlined" style="font-size:16px;">delete</span>
             删除
         </div>
+    </div>
+    
+    <!-- 标签选择弹窗 (全局定位) -->
+    <div id="tag-popup" class="tag-popup hidden">
+        <!-- 由 render.js 动态填充 -->
     </div>
 
 </body>
