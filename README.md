@@ -21,8 +21,7 @@
 
 > 💡 暗色主题 · 三栏布局 · 现代设计
 
-<!-- 如果有截图，替换下方路径 -->
-<!-- ![界面预览](doc/preview.png) -->
+![界面预览](http://shuwu-java.oss-cn-chengdu.aliyuncs.com/Typroa/TaskList%E9%A1%B9%E7%9B%AE%E6%88%AA%E5%9B%BE.png)
 
 ```
 ┌──────────────┬────────────────────────────┬──────────────────┐
@@ -327,4 +326,4 @@ TaskList/
 ## 📝 License
 
 [MIT](LICENSE) © zhoujunyu
-"# TaskList" 
+"# TaskList"

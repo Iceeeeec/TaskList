@@ -1,0 +1,26 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.log
+
+# Node (如果后续引入)
+node_modules/
+package-lock.json
+
+# 环境配置
+*.env
+application-local.yml

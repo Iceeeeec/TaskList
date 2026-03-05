@@ -1,0 +1,80 @@
+/**
+ * 标题: Reset
+ * 说明: 浏览器默认样式重置与基础设置
+ * 时间: 2026-03-03 21:12
+ * @author: zhoujunyu
+ */
+
+/* ============================================
+   浏览器默认样式重置
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Manrope", "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 清除列表样式 */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 链接重置 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 按钮重置 */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* 输入框重置 */
+input,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  border: none;
+}
+
+textarea {
+  resize: none;
+}
+
+/* 图片自适应 */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* 分隔线重置 */
+hr {
+  border: none;
+  border-top: 1px solid var(--border-light);
+}

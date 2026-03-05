@@ -1,0 +1,299 @@
+/**
+ * 标题: Sidebar
+ * 说明: 左侧导航边栏样式 - 品牌/导航菜单/清单文件夹/标签/用户信息
+ * 时间: 2026-03-03 21:12
+ * @author: zhoujunyu
+ */
+
+/* ============================================
+   品牌区域
+   ============================================ */
+
+/* Logo + 标题行 */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-6);
+}
+
+/* Logo 图标容器 */
+.sidebar-brand .brand-icon {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.sidebar-brand .brand-icon .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* 品牌标题 */
+.sidebar-brand h1 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+}
+
+/* ============================================
+   导航区域（可滚动）
+   ============================================ */
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-2) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+/* 导航链接组 */
+.nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* 导航链接 */
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all var(--transition-fast);
+}
+
+.nav-link:hover {
+    background-color: var(--bg-light);
+}
+
+.nav-link .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* 导航链接计数徽章 */
+.nav-link .count {
+    margin-left: auto;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-placeholder);
+}
+
+/* 激活状态的导航链接 */
+.nav-link.active {
+    background-color: var(--bg-white);
+    color: var(--primary);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.nav-link.active .count {
+    font-weight: 700;
+}
+
+/* ============================================
+   清单文件夹区域
+   ============================================ */
+
+/* 区块标题行 */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+/* 区块标题文字 */
+.section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-placeholder);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* 添加按钮 */
+.section-header .add-btn {
+    color: var(--text-placeholder);
+    transition: color var(--transition-fast);
+}
+
+.section-header .add-btn:hover {
+    color: var(--primary);
+}
+
+.section-header .add-btn .material-symbols-outlined {
+    font-size: 14px;
+}
+
+/* 文件夹链接 */
+.folder-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: background-color var(--transition-fast);
+}
+
+.folder-link:hover {
+    background-color: var(--bg-light);
+}
+
+.folder-link .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* 文件夹颜色 */
+.folder-link .icon-blue { color: var(--folder-blue); }
+.folder-link .icon-green { color: var(--folder-green); }
+.folder-link .icon-orange { color: var(--folder-orange); }
+.folder-link .icon-purple { color: #8b5cf6; }
+.folder-link .icon-muted { color: #94a3b8; }
+
+/* 文件夹更多操作按钮（hover 显示） */
+.folder-link .more-btn {
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.folder-link:hover .more-btn {
+    opacity: 1;
+}
+
+.folder-link .more-btn .material-symbols-outlined {
+    font-size: 14px;
+    color: var(--text-placeholder);
+}
+
+/* ============================================
+   标签区域
+   ============================================ */
+.tag-section {
+    padding: 0 var(--space-3);
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+}
+
+/* 标签样式 */
+.sidebar-tag {
+    display: inline-flex;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+}
+
+.sidebar-tag:hover {
+    opacity: 0.8;
+}
+
+.sidebar-tag.tag-red {
+    background-color: var(--tag-red-bg);
+    color: var(--tag-red-text);
+    border: 1px solid var(--tag-red-border);
+}
+
+.sidebar-tag.tag-blue {
+    background-color: var(--tag-blue-bg);
+    color: var(--tag-blue-text);
+    border: 1px solid var(--tag-blue-border);
+}
+
+.sidebar-tag.tag-purple {
+    background-color: var(--tag-purple-bg);
+    color: var(--tag-purple-text);
+    border: 1px solid var(--tag-purple-border);
+}
+
+/* ============================================
+   底部用户信息
+   ============================================ */
+.sidebar-user {
+    padding: var(--space-4);
+    border-top: 1px solid var(--border-light);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+}
+
+/* 用户头像 */
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-light);
+    object-fit: cover;
+}
+
+/* 用户信息文字 */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1; /* 占据剩余空间 */
+    min-width: 0; /* 防止文本溢出撑开 */
+}
+
+.user-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* 退出登录按钮 */
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-placeholder);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.logout-btn:hover {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.logout-btn .material-symbols-outlined {
+    font-size: 1.1rem;
+}

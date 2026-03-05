@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!--
+    /**
+     * 标题: TaskList
+     * 说明: TaskList - 主页面（含交互功能）
+     * 时间: 2026-03-03 21:35
+     * @author: zhoujunyu
+     */
+    -->
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TaskList</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- CSS 模块化引入 -->
+    <link rel="stylesheet" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/variables.css"/>
+    <link rel="stylesheet" href="css/scrollbar.css"/>
+    <link rel="stylesheet" href="css/layout.css"/>
+    <link rel="stylesheet" href="css/components.css"/>
+    <link rel="stylesheet" href="css/sidebar.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/detail.css"/>
+</head>
+<body>
+
+<!-- 登录弹窗 -->
+<div id="login-modal" class="login-overlay">
+    <div class="login-card">
+        <div class="login-header">
+            <h1 class="login-title">TaskList</h1>
+            <p class="login-subtitle" id="login-subtitle">登录你的账户</p>
+        </div>
+        <div class="login-body">
+            <!-- 用户名 -->
+            <div class="login-field">
+                <span class="material-symbols-outlined login-field-icon">person</span>
+                <input type="text" id="login-username" placeholder="用户名" autocomplete="username" />
+            </div>
+            <!-- 密码 -->
+            <div class="login-field">
+                <span class="material-symbols-outlined login-field-icon">lock</span>
+                <input type="password" id="login-password" placeholder="密码" autocomplete="current-password" />
+            </div>
+            <!-- 昵称（仅注册模式显示） -->
+            <div class="login-field hidden" id="login-nickname-field">
+                <span class="material-symbols-outlined login-field-icon">badge</span>
+                <input type="text" id="login-nickname" placeholder="昵称（可选）" />
+            </div>
+            <!-- 错误提示 -->
+            <p class="login-error hidden" id="login-error"></p>
+            <!-- 登录按钮 -->
+            <button class="login-btn" id="login-btn">登 录</button>
+        </div>
+        <div class="login-footer">
+            <span id="login-toggle-text">没有账户？</span>
+            <a href="#" id="login-toggle">立即注册</a>
+        </div>
+    </div>
+</div>
+
+<div class="app-container">
+
+    <!-- ========================================
+         左侧边栏
+         ======================================== -->
+    <aside class="sidebar">
+
+        <!-- 品牌区域 -->
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <span class="material-symbols-outlined">check</span>
+            </div>
+            <h1>任务清单</h1>
+        </div>
+
+        <!-- 导航区域 -->
+        <nav class="sidebar-nav">
+
+            <!-- 快捷导航 -->
+            <div class="nav-group">
+                <a class="nav-link active" href="#">
+                    <span class="material-symbols-outlined">inbox</span>
+                    所有任务
+                    <span class="count">0</span>
+                </a>
+                <a class="nav-link" href="#">
+                    <span class="material-symbols-outlined">sunny</span>
+                    今天
+                    <span class="count">0</span>
+                </a>
+                <a class="nav-link" href="#">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    最近七天
+                    <span class="count">0</span>
+                </a>
+            </div>
+
+            <!-- 清单文件夹 -->
+            <div>
+                <div class="section-header">
+                    <span class="section-title">清单文件夹</span>
+                    <button class="add-btn" id="add-folder-btn">
+                        <span class="material-symbols-outlined">add</span>
+                    </button>
+                </div>
+                <div class="nav-group folder-list">
+                    <!-- 由 render.js 动态填充 -->
+                </div>
+            </div>
+
+            <!-- 标签区域 -->
+            <div class="tag-section">
+                <div class="section-header">
+                    <span class="section-title">标签</span>
+                </div>
+                <div class="tag-list">
+                    <span class="sidebar-tag tag-red">#紧急</span>
+                    <span class="sidebar-tag tag-blue">#待定</span>
+                    <span class="sidebar-tag tag-purple">#想法</span>
+                </div>
+            </div>
+
+        </nav>
+
+        <!-- 底部用户信息 -->
+        <div class="sidebar-user">
+            <div class="user-profile">
+                <img class="user-avatar" id="sidebar-user-avatar" src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff" alt="User"/>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-user-name">未登录</span>
+                </div>
+                <!-- 退出登录按钮 -->
+                <button class="logout-btn" id="logout-btn" title="退出登录">
+                    <span class="material-symbols-outlined">logout</span>
+                </button>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- ========================================
+         主内容区域
+         ======================================== -->
+    <main class="main-content">
+
+        <!-- 头部 -->
+        <header class="main-header">
+            <div>
+                <h2>所有任务</h2>
+                <p class="date-text">今天是...</p>
+            </div>
+            <div class="header-actions">
+                <!-- 消息通知 -->
+                <!-- 消息通知 -->
+                <div class="notification-wrapper" style="position: relative;">
+                    <button class="notification-btn" id="notification-btn" title="消息提醒">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="notification-badge hidden" id="notification-badge">0</span>
+                    </button>
+                    <!-- 消息下拉弹窗 -->
+                    <div class="notification-popup hidden" id="notification-popup">
+                        <div class="notification-header">
+                            <span class="notification-title">今日提醒</span>
+                            <span class="material-symbols-outlined" style="font-size:16px; color:var(--text-muted); cursor:pointer;" onclick="document.getElementById('notification-popup').classList.add('hidden')">close</span>
+                        </div>
+                        <div class="notification-list" id="notification-list">
+                            <!-- 由 JS 动态渲染 -->
+                            <div class="notification-empty">暂无提醒</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-wrapper">
+                    <span class="material-symbols-outlined search-icon">search</span>
+                    <input class="search-input" type="text" placeholder="搜索..."/>
+                </div>
+            </div>
+        </header>
+
+        <!-- 添加任务栏 -->
+        <div class="add-task-section">
+            <div class="add-task-card">
+                <div class="add-task-input-row">
+                    <span class="material-symbols-outlined">add_task</span>
+                    <input class="add-task-input" type="text" placeholder="添加新任务，按回车保存..."/>
+                </div>
+                <div class="add-task-toolbar">
+                    <div class="toolbar-actions">
+                        <div class="toolbar-btn" id="toolbar-date-btn" title="设置日期" style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                            <span class="material-symbols-outlined">calendar_today</span>
+                            <span id="toolbar-date-text">今天</span>
+                        </div>
+                        <button class="toolbar-btn" title="设置优先级">
+                            <span class="material-symbols-outlined flag-orange">flag</span>
+                            <span>中优先级</span>
+                        </button>
+                        <button class="toolbar-btn" title="添加标签">
+                            <span class="material-symbols-outlined">label</span>
+                        </button>
+                        <button class="toolbar-btn" title="选择清单" id="toolbar-category-btn">
+                            <span class="material-symbols-outlined">folder</span>
+                        </button>
+                    </div>
+                    <!-- 自定义日期选择弹窗 -->
+                    <div id="calendar-popup" class="calendar-popup hidden">
+                        <div class="calendar-header">
+                            <div class="calendar-month-year" id="calendar-month-year">2026年01月</div>
+                            <div class="calendar-nav">
+                                <button class="calendar-nav-btn" id="calendar-prev-month"><span class="material-symbols-outlined">arrow_upward</span></button>
+                                <button class="calendar-nav-btn" id="calendar-next-month"><span class="material-symbols-outlined">arrow_downward</span></button>
+                            </div>
+                        </div>
+                        <div class="calendar-weekdays">
+                            <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+                        </div>
+                        <div class="calendar-days" id="calendar-days">
+                            <!-- JS 动态渲染 -->
+                        </div>
+                        <div class="calendar-footer">
+                            <button class="calendar-footer-btn" id="calendar-clear-btn">清除</button>
+                            <button class="calendar-footer-btn" id="calendar-today-btn">今天</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 清单选择弹窗 -->
+                    <div id="category-popup" class="category-popup hidden">
+                        <div class="category-popup-item" data-cat="">
+                            <span class="material-symbols-outlined" style="font-size:16px;color:var(--text-placeholder)">block</span>
+                            无清单
+                        </div>
+                        <div class="category-popup-item" data-cat="工作">
+                            <span class="material-symbols-outlined" style="font-size:16px;color:var(--primary)">folder</span>
+                            工作
+                        </div>
+                        <div class="category-popup-item" data-cat="学习">
+                            <span class="material-symbols-outlined" style="font-size:16px;color:#22c55e">folder</span>
+                            学习
+                        </div>
+                        <div class="category-popup-item" data-cat="生活">
+                            <span class="material-symbols-outlined" style="font-size:16px;color:#8b5cf6">folder</span>
+                            生活
+                        </div>
+                        <div class="category-popup-item" data-cat="健康">
+                            <span class="material-symbols-outlined" style="font-size:16px;color:#22c55e">folder</span>
+                            健康
+                        </div>
+                        <div class="category-popup-item" data-cat="家庭">
+                            <span class="material-symbols-outlined" style="font-size:16px;color:#94a3b8">folder</span>
+                            家庭
+                        </div>
+                    </div>
+                    <!-- 标签选择弹窗 -->
+                    <div id="tag-popup" class="tag-popup hidden">
+                        <!-- 由 render.js 动态填充 -->
+                    </div>
+
+                    <button class="add-submit-btn">
+                        <span class="material-symbols-outlined">save</span>
+                        添加
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 任务列表表头 -->
+        <div class="task-list-header">
+            <div class="col-check"></div>
+            <div>任务内容</div>
+            <div class="col-priority">优先级</div>
+            <div class="col-date">截止日期</div>
+        </div>
+
+        <!-- 任务列表（JS 动态渲染） -->
+        <div class="task-list">
+            <!-- 由 render.js 动态填充 -->
+        </div>
+
+        <!-- 底部状态栏 -->
+        <div class="main-footer">
+            <span>0 个待办任务</span>
+            <button class="clear-btn">清除已完成</button>
+        </div>
+
+    </main>
+
+    <!-- ========================================
+         右侧详情面板
+         ======================================== -->
+    <aside class="detail-panel">
+
+        <!-- 详情头部 -->
+        <div class="detail-header">
+            <label class="checkbox-wrapper" onclick="event.stopPropagation()">
+                <input type="checkbox"/>
+                <div class="checkbox-custom">
+                    <span class="material-symbols-outlined">check</span>
+                </div>
+            </label>
+            <input class="detail-title-input" type="text" value=""/>
+            <button class="detail-delete-btn">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+        </div>
+
+        <!-- 详情主体 -->
+        <div class="detail-body">
+
+            <!-- 描述内容（可编辑） -->
+            <div class="detail-desc-section">
+                <input class="detail-desc-input" type="text" placeholder="添加描述内容..." value=""/>
+            </div>
+
+            <!-- 属性区域 -->
+            <div class="detail-props">
+                <!-- 截止日期（可点击编辑） -->
+                <span class="material-symbols-outlined prop-icon">calendar_month</span>
+                <div class="prop-row prop-row-editable" id="duedate-prop-row" style="position: relative;">
+                    <span class="prop-label">截止日期</span>
+                    <span class="prop-value prop-value-date">-</span>
+                    <!-- 详情页日历弹窗 -->
+                    <div id="detail-calendar-popup" class="calendar-popup hidden" style="top: calc(100% + 8px); left: 0;">
+                        <div class="calendar-header">
+                            <div class="calendar-month-year" id="detail-calendar-month-year">2026年03月</div>
+                            <div class="calendar-nav">
+                                <button class="calendar-nav-btn" id="detail-calendar-prev"><span class="material-symbols-outlined">arrow_upward</span></button>
+                                <button class="calendar-nav-btn" id="detail-calendar-next"><span class="material-symbols-outlined">arrow_downward</span></button>
+                            </div>
+                        </div>
+                        <div class="calendar-weekdays detail-cal-weekdays">
+                            <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+                        </div>
+                        <div class="calendar-days" id="detail-calendar-days">
+                        </div>
+                        <div class="calendar-footer">
+                            <button class="calendar-footer-btn" id="detail-calendar-clear">清除</button>
+                            <button class="calendar-footer-btn" id="detail-calendar-today">今天</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 优先级（可点击编辑） -->
+                <span class="material-symbols-outlined prop-icon">flag</span>
+                <div class="prop-row prop-row-editable" id="priority-prop-row">
+                    <span class="prop-label">优先级</span>
+                    <span class="prop-value priority-mid prop-value-priority">
+                        <span class="priority-dot"></span>
+                        中
+                    </span>
+                    <!-- 优先级下拉选择 -->
+                    <div class="prop-dropdown hidden" id="priority-dropdown">
+                        <div class="prop-dropdown-item" data-priority="high">
+                            <span class="priority-dot" style="background-color: var(--priority-high)"></span>
+                            高
+                        </div>
+                        <div class="prop-dropdown-item" data-priority="mid">
+                            <span class="priority-dot" style="background-color: var(--priority-mid)"></span>
+                            中
+                        </div>
+                        <div class="prop-dropdown-item" data-priority="low">
+                            <span class="priority-dot" style="background-color: var(--priority-low)"></span>
+                            低
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 清单（可点击编辑） -->
+                <span class="material-symbols-outlined prop-icon">list</span>
+                <div class="prop-row prop-row-editable" id="category-prop-row">
+                    <span class="prop-label">清单</span>
+                    <span class="prop-value prop-value-list">-</span>
+                    <!-- 清单下拉选择 -->
+                    <div class="prop-dropdown hidden" id="category-dropdown">
+                        <!-- 由 JS 动态渲染 -->
+                    </div>
+                </div>
+
+                <!-- 标签 -->
+                <span class="material-symbols-outlined prop-icon">label</span>
+                <div class="prop-row">
+                    <span class="prop-label">标签</span>
+                    <div class="detail-tags-list">
+                        <span class="prop-value-empty">无标签</span>
+                    </div>
+                </div>
+
+                <!-- 提醒 -->
+                <span class="material-symbols-outlined prop-icon">notifications</span>
+                <div class="prop-row">
+                    <span class="prop-label">提醒</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="detail-remind-switch" checked/>
+                        <div class="toggle-track"></div>
+                    </label>
+                </div>
+            </div>
+
+            <hr/>
+
+            <!-- 子任务 -->
+            <div class="subtask-section">
+                <div class="subtask-header">
+                    <h3>子任务</h3>
+                    <button class="subtask-add-btn">添加</button>
+                </div>
+                <div class="subtask-list">
+                    <!-- 由 render.js 动态填充 -->
+                </div>
+            </div>
+
+            <hr/>
+
+            <!-- 备注 -->
+            <div class="note-section">
+                <h3>备注</h3>
+                <textarea class="note-textarea" placeholder="添加备注..."></textarea>
+            </div>
+
+        </div>
+
+        <!-- 详情底部 -->
+        <div class="detail-footer">
+            <span class="detail-create-date">创建于 -</span>
+            <button class="hide-btn">隐藏详情面板</button>
+        </div>
+
+    </aside>
+
+</div>
+
+<!-- 自定义文件夹操作弹窗 -->
+<div id="folder-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+        <div class="modal-header">
+            <span class="modal-title" id="folder-modal-title">新建清单</span>
+            <button class="modal-close" id="folder-modal-close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <label class="modal-label">清单名称</label>
+            <input type="text" class="modal-input" id="folder-modal-input" placeholder="输入清单名称..." maxlength="20" />
+            <label class="modal-label" style="margin-top:12px">选择颜色</label>
+            <div class="modal-colors" id="folder-modal-colors">
+                <!-- 由 JS 动态填充 -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" id="folder-modal-cancel">取消</button>
+            <button class="modal-btn modal-btn-confirm" id="folder-modal-confirm">确定</button>
+        </div>
+    </div>
+</div>
+
+<!-- 通用确认弹窗 (Confirm Modal) -->
+<div id="confirm-modal" class="modal-overlay hidden" style="z-index: 2000;">
+    <div class="modal-card" style="width: 320px;">
+        <div class="modal-header">
+            <span class="modal-title" id="confirm-modal-title">提示</span>
+            <button class="modal-close" id="confirm-modal-close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="confirm-modal-msg" style="margin: 12px 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;"></p>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" id="confirm-modal-cancel">取消</button>
+            <button class="modal-btn modal-btn-confirm" id="confirm-modal-btn">确定</button>
+        </div>
+    </div>
+</div>
+
+<!-- JS 模块化引入 -->
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
+
+    <!-- 清单更多操作弹窗（全局绝对定位） -->
+    <div id="folder-more-popup" class="folder-popup hidden">
+        <div class="folder-popup-item" id="folder-edit-action">
+            <span class="material-symbols-outlined" style="font-size:16px;">edit</span>
+            编辑
+        </div>
+        <div class="folder-popup-item text-red" id="folder-delete-action">
+            <span class="material-symbols-outlined" style="font-size:16px;">delete</span>
+            删除
+        </div>
+    </div>
+
+</body>
+</html>

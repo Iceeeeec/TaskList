@@ -1,0 +1,283 @@
+/**
+ * 标题: Detail
+ * 说明: 右侧任务详情面板样式 - 标题/属性/子任务/备注
+ * 时间: 2026-03-03 21:12
+ * @author: zhoujunyu
+ */
+
+/* ============================================
+   详情面板头部
+   ============================================ */
+.detail-header {
+    padding: var(--space-5);
+    border-bottom: 1px solid var(--border-lighter);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.detail-header .checkbox-wrapper {
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+/* 标题输入框 */
+.detail-title-input {
+    flex: 1;
+    width: 100%;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    background: transparent;
+    padding: 0;
+}
+
+.detail-title-input::placeholder {
+    color: var(--text-placeholder);
+}
+
+/* 删除按钮 */
+.detail-delete-btn {
+    color: var(--text-placeholder);
+    transition: color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.detail-delete-btn:hover {
+    color: var(--priority-high);
+}
+
+.detail-delete-btn .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* ============================================
+   描述内容编辑
+   ============================================ */
+.detail-desc-section {
+    padding: 0 var(--space-5);
+    padding-top: var(--space-3);
+}
+
+.detail-desc-input {
+    width: 100%;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: transparent;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-lighter);
+    transition: border-color var(--transition-fast);
+}
+
+.detail-desc-input:focus {
+    border-bottom-color: var(--primary);
+}
+
+.detail-desc-input::placeholder {
+    color: var(--text-placeholder);
+}
+
+/* ============================================
+   详情面板主体（可滚动）
+   ============================================ */
+.detail-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+/* ============================================
+   属性网格
+   ============================================ */
+.detail-props {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: var(--space-4) var(--space-3);
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+/* 属性图标 */
+.detail-props .prop-icon {
+    color: var(--text-placeholder);
+    font-size: 20px;
+}
+
+/* 属性行 */
+.prop-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px var(--space-2);
+    margin: 0 calc(-1 * var(--space-2));
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.prop-row:hover {
+    background-color: var(--bg-sidebar);
+}
+
+/* 属性标签 */
+.prop-label {
+    color: var(--text-muted);
+}
+
+/* 属性值 */
+.prop-value {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* 优先级值 */
+.prop-value.priority-mid {
+    color: var(--priority-mid);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 优先级小圆点 */
+.priority-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--priority-mid);
+}
+
+/* ============================================
+   子任务区域
+   ============================================ */
+.subtask-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.subtask-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+}
+
+.subtask-header h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.subtask-add-btn {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    transition: text-decoration var(--transition-fast);
+}
+
+.subtask-add-btn:hover {
+    text-decoration: underline;
+}
+
+/* 子任务列表 */
+.subtask-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* 子任务项 */
+.subtask-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+/* 已完成子任务 */
+.subtask-item .subtask-text.done {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-placeholder);
+    color: var(--text-muted);
+}
+
+.subtask-item .subtask-text {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
+
+/* 添加子任务占位 */
+.subtask-add-placeholder {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.subtask-add-placeholder .material-symbols-outlined {
+    font-size: 18px;
+    color: var(--text-placeholder);
+}
+
+.subtask-add-placeholder span:last-child {
+    font-size: 0.875rem;
+    color: var(--text-placeholder);
+}
+
+/* ============================================
+   备注区域
+   ============================================ */
+.note-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.note-section h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.note-textarea {
+    width: 100%;
+    height: 128px;
+    padding: var(--space-3);
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    background-color: var(--bg-sidebar);
+    border-radius: var(--radius-md);
+}
+
+.note-textarea::placeholder {
+    color: var(--text-placeholder);
+}
+
+.note-textarea:focus {
+    box-shadow: 0 0 0 1px rgba(19, 127, 236, 0.5);
+}
+
+/* ============================================
+   详情面板底部
+   ============================================ */
+.detail-footer {
+    padding: var(--space-4);
+    border-top: 1px solid var(--border-lighter);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-placeholder);
+    background-color: rgba(248, 250, 252, 0.5);
+}
+
+.detail-footer .hide-btn {
+    color: var(--text-placeholder);
+    transition: color var(--transition-fast);
+}
+
+.detail-footer .hide-btn:hover {
+    color: var(--primary);
+}
