@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="doc/logo.svg" alt="TaskList Logo" width="80" />
-</p>
-
 <h1 align="center">✅ TaskList - 任务管理系统</h1>
 
 <p align="center">
