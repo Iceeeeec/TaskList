@@ -5,8 +5,9 @@
  * @author: zhoujunyu
  */
 
-// const API_BASE = '/api';
-const API_BASE = 'http://localhost:8733/api';
+// const API_BASE = 'http://localhost:8733/api'; // 本地开发时使用
+const API_BASE = '/api'; // 部署到服务器时使用，配合 Nginx 反向代理
+// 如果后端跨域且没有使用 Nginx，可以直接写服务器 IP: const API_BASE = 'http://你的服务器IP:8733/api';
 
 /** 获取当前登录用户ID */
 function getLoginUserId() {
